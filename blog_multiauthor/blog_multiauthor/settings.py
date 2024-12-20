@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -121,6 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -130,4 +132,64 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'  # URL pública para acessar os arquivos
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Caminho absoluto na máquina
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# X_FRAME_OPTIONS = 'SAMEORIGIN'
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+# SECURE_CONTENT_TYPE_NOSNIFF = False
+SUMMERNOTE_CONFIG = {
+    # 'iframe': {'width': '640', 'height': '360'}, 
+     'iframe': True, # Configuração do vídeo
+    'file_picker': True,
+    'image_path': 'uploads/images/',  # Caminho para as imagens
+    'upload_to': 'uploads/',    # Se realmente precisar desativar
+    'codemirror': {
+        'mode': 'htmlmixed',
+        'lineNumbers': True,
+    },
+    'summernote': {
+        'toolbar': [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview']],
+        ],
+        
+    },
+}
+
+
+# Definindo os estilos CSS permitidos
+
+from bleach.css_sanitizer import CSSSanitizer
+from bleach import Cleaner
+
+# Defina propriedades CSS permitidas
+ALLOWED_CSS_PROPERTIES = [
+    "width", "height", "max-width", "max-height",
+    "border", "margin", "padding", "float", "display"
+]
+
+# Crie o sanitizador CSS
+css_sanitizer = CSSSanitizer(
+    allowed_css_properties=ALLOWED_CSS_PROPERTIES
+)
+
+
+ALLOWED_TAGS = [
+    "a", "b", "i", "u", "strong", "em", "p", "h1", "h2", "h3", 
+    "ul", "ol", "li", "br", "hr", "blockquote", "pre", "code",
+    "img", "video", "source"
+]
+
+ATTRIBUTES = {
+    "*": ["class", "id", "style", "title"],
+    "a": ["href", "rel", "target"],
+    "img": ["src", "alt", "width", "height"],
+    "video": ["src", "width", "height", "controls", "autoplay"],
+    "source": ["src", "type"]
+}
+
+cleaner = Cleaner(
+    tags=ALLOWED_TAGS,
+    attributes=ATTRIBUTES,
+    css_sanitizer=css_sanitizer
+)

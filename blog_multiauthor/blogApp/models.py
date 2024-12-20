@@ -17,11 +17,10 @@ class Post(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = SummernoteTextField()  # Campo de texto rico
+    content = models.TextField(default="Um teste de conteudo")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(default=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-
+    active = models.BooleanField(default=True) # soft delete
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending') # aprovação para moderadores
     def __str__(self):
         return self.title

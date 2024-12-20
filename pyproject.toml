@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.8"
 django = "3.2.24"
 django-summernote = "^0.8.20.0"
+tinycss2 = "^1.4.0"
 
 
 [build-system]

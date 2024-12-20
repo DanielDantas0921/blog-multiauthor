@@ -1,0 +1,16 @@
+
+{% extends "core/base.html" %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+   
+<h1>Formulário de criação de Post</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- Exibe o formulário como parágrafos -->
+    
+    <button type="submit">Criar Post</button>
+  </form>
+
+{% endblock %}
