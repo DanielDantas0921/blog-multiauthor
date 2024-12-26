@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "2 sistema blog multiauthor"
+name = "blog-multiauthor"
 version = "0.1.0"
 description = ""
 authors = ["Daniel Dantas <daniel.dantas808@gmail.com>"]
