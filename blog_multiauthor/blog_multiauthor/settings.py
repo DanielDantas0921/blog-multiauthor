@@ -40,8 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_summernote',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'blogApp'
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'blog_multiauthor.urls'
@@ -58,7 +66,7 @@ ROOT_URLCONF = 'blog_multiauthor.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,6 +74,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'allauth.account.context_processors.account',  # Certifique-se de incluir isso
+                # 'allauth.socialaccount.context_processors.socialaccount',  # Para login social
             ],
         },
     },
@@ -193,3 +203,71 @@ cleaner = Cleaner(
     attributes=ATTRIBUTES,
     css_sanitizer=css_sanitizer
 )
+
+
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+    
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'OAUTH_PKCE_ENABLED': True,
+    }
+    #  "google": {
+    #     # For each OAuth based provider, either add a ``SocialApp``
+    #     # (``socialaccount`` app) containing the required client
+    #     # credentials, or list them here:
+    #     "APPS": [
+    #         {
+    #             "client_id": "126886693978-demt3e6ic4jq8nmburllormgi0qa0plc.apps.googleusercontent.com",
+    #             "secret": "126886693978-demt3e6ic4jq8nmburllormgi0qa0plc.apps.googleusercontent.com",
+    #             "key": "",
+    #             "settings": {
+    #                 # You can fine tune these settings per app:
+    #                 "scope": [
+    #                     "profile",
+    #                     "email",
+    #                 ],
+    #                 "auth_params": {
+    #                     "access_type": "online",
+    #                 },
+    #             },
+    #         },
+    #     ],
+    #     # The following provider-specific settings will be used for all apps:
+    #     "SCOPE": [
+    #         "profile",
+    #         "email",
+    #     ],
+    #     "AUTH_PARAMS": {
+    #         "access_type": "online",
+    #     },
+    # }
+}
+
+EMAIL_BACKEND = 'django.core.backends.console.EmailBackend'
+
+
+
+SITE_ID = 2
+
+LOGIN_REDIRECT_URL = '/'  # Redireciona para a home após login
+LOGOUT_REDIRECT_URL = '/'  # Redireciona para a home após logout
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/' 
+
+# Configurações de e-mail e verificação
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "optional"  # "none", "optional", ou "mandatory"
+
+# Permitir login social com email
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_STORE_TOKENS = True

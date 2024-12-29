@@ -1,0 +1,46 @@
+{% load socialaccount %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login Template personalizado</h1>
+    
+
+    <form method="post" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+
+    <hr>
+    <h2>Ou faça login com:</h2>
+    <ul>
+        {% providers_media_js %}
+        {% for provider in socialaccount_providers %}
+            <li>
+                <a href="{% provider_login_url provider.id %}">
+                    Login com {{ provider.name }}
+                </a>
+            </li>
+        {% endfor %}
+     
+    </ul>
+
+    <hr>
+    <h1>teste de tags segundo documentação</h1>
+    
+    {% get_providers as socialaccount_providers %}
+    {% for provider in socialaccount_providers %}
+        <li>
+            <a href="{% provider_login_url provider.id %}">
+                Login com {{ provider.name }}
+            </a>
+        </li>
+    {% endfor %}
+
+   
+    
+</body>
+</html>

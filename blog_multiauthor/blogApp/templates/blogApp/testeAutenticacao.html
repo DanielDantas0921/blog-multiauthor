@@ -1,0 +1,9 @@
+<h2>Login via Redes Sociais</h2>
+<ul>
+    {% for provider in social_providers %}
+        <li>
+            <a href="{{ provider.login_url }}">{{ provider.name }}</a>
+        </li>
+    {% endfor %}
+    <a href="{% url 'account_logout'%}">Logout</a>
+</ul>

@@ -54,3 +54,14 @@ class PostListView(ListView):
     paginate_by = 10
     context_object_name = 'posts'
     template_name = 'blogApp/listPosts.html'
+
+from allauth.socialaccount.adapter import get_adapter
+
+class testeAutenticacao(TemplateView):
+    template_name = 'blogApp/testeAutenticacao.html'
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     adapter = get_adapter(self.request)
+    #     context['social_providers'] = adapter.list_providers(self.request)
+    #     print(str(context))
+    #     return context
